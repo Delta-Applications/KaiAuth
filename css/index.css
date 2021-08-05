@@ -18,19 +18,33 @@
 
 .authcode-item.active {
     background: rgb(5, 76, 119);
-    color: #ffffff;
+    color: #fff;
+    stroke: #fff;
 }
 
+.authcode-item.active > .code-row > span > svg > .progress-value {
+    stroke: #fff;
+}
+
+
 .authcode-item > .code-row {
-    padding:2px 2px 2px 2px;
-    font-size: 2em;
+    margin:-5px 2px 2px 2px;
+    font-size: 2rem;
     display:flex;
     justify-content:space-between;
 }
 
 .authcode-item > .name-row {
-    padding:2px 2px 2px 2px;
-    font-size: 1em;
+    margin: -6px 2px 2px 2px;
+    font-size: 0.8rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.authcode-item > .issuer-row {
+    margin:1px 2px 2px 2px;
+    font-size: 1.2rem;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -38,11 +52,10 @@
 
 .progress {
     transform: rotate(-90deg);
-    padding:2px 2px 2px 2px;
 }
 
 .progress-value {
     fill: none;
-	stroke: #fff;
+	stroke: #111;
 	stroke-linecap: round;
 }

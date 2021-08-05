@@ -27,20 +27,29 @@ window.addEventListener('DOMContentLoaded', function () {
             refreshCodeList();
         }
     }
+    
+
     function refreshCodeList() {
         mainlist.innerHTML = '';
         if(authcodes.length > 0){
             authcodes.forEach(element => {
-                console.log(authcodes)
                 let code = window.otplib.authenticator.generate(element.secret);
                 let item = document.createElement('div');
                 item.dataset.id = element.id;
+                item.id = element.id;
                 item.innerHTML = `
+                <style>
+                #${element.id} .active {
+                    background: rgb(6, 56, 119) !important;
+                    color: #ffffff;
+                }
+                </style>
+                <p class="issuer-row">${element.issuer}</p>
                 <p class="name-row">${element.name}</p>
                 <p class="code-row">
                 <span>${numberWithSpaces(code)}</span>
                 <span>
-                    <svg class="progress" width="0.9em" height="0.9em" viewBox="0 0 120 120">
+                    <svg class="progress" width="0.8em" height="0.8em" viewBox="0 0 125 125">
                         <circle class="progress-value" cx="60" cy="60" r="54" stroke-width="12" />
                     </svg>
                 </span>
@@ -139,16 +148,20 @@ window.addEventListener('DOMContentLoaded', function () {
                         alert(translate('valid-qrcode'));
                     }else{
                         var totpName = gaDetail.label.account;
+                        var issuer = "Unknown Issuer";
                         if(gaDetail.label.issuer){
-                            totpName = gaDetail.label.issuer + ':' + totpName;
+                            totpName = totpName;
+                            issuer = gaDetail.label.issuer
                         }else{
                             if(gaDetail.query.hasOwnProperty('issuer')){
-                                totpName = gaDetail.query.issuer + ':' + totpName;
+                                totpName = totpName;
+                                issuer = gaDetail.query.issuer
                             }
                         }
                         var item = {
                             id: generateNewID(),
                             name: totpName,
+                            issuer: issuer,
                             secret: gaDetail.query.secret
                         }
                         authcodes.push(item);

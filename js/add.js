@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', function () {
             });
             if(code){
                 activityHandler.postResult(code.data);
+                console.log(code)
             }
         }
     }
