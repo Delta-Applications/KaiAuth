@@ -1,8 +1,8 @@
 # KaiAuth
-
+Simple One Time Password Manager for KaiOS
 ![KaiAuth icon](img/icons/app_112.png)
 
-KaiAuth is a simple Google Authenticator alternative on KaiOS.
+
 
 # Screenshots
 
