@@ -31,10 +31,12 @@ window.addEventListener('DOMContentLoaded', function () {
         mainlist.innerHTML = '';
         if(authcodes.length > 0){
             authcodes.forEach(element => {
+                console.log(authcodes)
                 let code = window.otplib.authenticator.generate(element.secret);
                 let item = document.createElement('div');
                 item.dataset.id = element.id;
                 item.innerHTML = `
+                <p class="name-row">${element.name}</p>
                 <p class="code-row">
                 <span>${numberWithSpaces(code)}</span>
                 <span>
@@ -43,7 +45,6 @@ window.addEventListener('DOMContentLoaded', function () {
                     </svg>
                 </span>
                 </p>
-                <p class="name-row">${element.name}</p>
                 `;
                 item.classList.add('authcode-item');
                 mainlist.appendChild(item);
