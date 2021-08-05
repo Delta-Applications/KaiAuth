@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', function () {
-    setInterval(updateRemaining, 1000);
+    setInterval(refreshCodeList, 1000);
     var translate = navigator.mozL10n.get;
     var mainlist = document.getElementById('authcodes');
     var authcodes = [], selectIndex = 0;
@@ -12,27 +12,19 @@ window.addEventListener('DOMContentLoaded', function () {
             authcodes = [];
         }
         refreshCodeList();
-        updateRemaining();
     }
-    function updateRemaining() {
-        let remain = window.otplib.authenticator.timeRemaining();
-        let step = window.otplib.authenticator.allOptions().step;
-        var processValue = document.getElementsByClassName('progress-value');
-        [].forEach.call(processValue, element => {
-            element.style.strokeDasharray = 2 * Math.PI * 54;
-            element.style.strokeDashoffset = 2 * Math.PI * 54 * (1 - remain / step);
-        });
-        document.getElementById('time-remaining').innerText = `${remain}s`;
-        if (remain === step) {
-            refreshCodeList();
-        }
-    }
+    
     
 
     function refreshCodeList() {
         mainlist.innerHTML = '';
         if(authcodes.length > 0){
             authcodes.forEach(element => {
+                otplib.authenticator.options = {
+                    step: Number(element.period),
+                    digits: Number(element.digits),
+                    window: 1
+                  };
                 let code = window.otplib.authenticator.generate(element.secret);
                 let item = document.createElement('div');
                 item.dataset.id = element.id;
@@ -55,8 +47,15 @@ window.addEventListener('DOMContentLoaded', function () {
                 </span>
                 </p>
                 `;
+                let remain = window.otplib.authenticator.timeRemaining();
+                let step = window.otplib.authenticator.allOptions().step;
+                var progressbar = item.children[3].children[1].children[0].children[0]
+                progressbar.style.strokeDasharray = 2 * Math.PI * 54;
+                progressbar.style.strokeDashoffset = 2 * Math.PI * 54 * (1 - remain / step);
                 item.classList.add('authcode-item');
                 mainlist.appendChild(item);
+                document.getElementById('time-remaining').innerText = `${remain}s`;
+
             });
             selectItemByIndex();
         }
@@ -144,11 +143,16 @@ window.addEventListener('DOMContentLoaded', function () {
 				qrcode.onsuccess = function () {
 					qrcodeContent = this.result;
                     gaDetail = parseURI(qrcodeContent);
+                    console.log(gaDetail)
                     if(gaDetail == null){
                         alert(translate('valid-qrcode'));
                     }else{
+
                         var totpName = gaDetail.label.account;
                         var issuer = "Unknown Issuer";
+                        var digits = 6;
+                        var period = 30;
+
                         if(gaDetail.label.issuer){
                             totpName = totpName;
                             issuer = gaDetail.label.issuer
@@ -158,10 +162,21 @@ window.addEventListener('DOMContentLoaded', function () {
                                 issuer = gaDetail.query.issuer
                             }
                         }
+
+                        if(gaDetail.query.hasOwnProperty('digits')){
+                                digits = gaDetail.query.digits
+                        }
+                        if(gaDetail.query.hasOwnProperty('period')){
+                                period = gaDetail.query.period
+                        }
+
+
                         var item = {
                             id: generateNewID(),
                             name: totpName,
                             issuer: issuer,
+                            period: period,
+                            digits: digits,
                             secret: gaDetail.query.secret
                         }
                         authcodes.push(item);
