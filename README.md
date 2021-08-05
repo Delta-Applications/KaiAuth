@@ -2,7 +2,12 @@
 Simple One Time Password Manager for KaiOS
 ![KaiAuth icon](img/icons/app_112.png)
 
-
+What changes from original KaiAuth:
+- Support for codes with non-6 digit length
+- Support for codes with non-30 second duration
+- Bugfixing
+- Now grabs Issuer, Duration, Digits from QR Code
+- Future updates: Possibly grab logo and color from database like Authy does
 
 # Screenshots
 
