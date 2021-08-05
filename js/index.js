@@ -1,5 +1,7 @@
+//while (true) {navigator.vibrate( [500, 50, 500] ) }
+
 window.addEventListener('DOMContentLoaded', function () {
-    setInterval(refreshCodeList, 1000);
+    setInterval(refreshCodeList, 800);
     var translate = navigator.mozL10n.get;
     var mainlist = document.getElementById('authcodes');
     var authcodes = [], selectIndex = 0;
@@ -14,9 +16,25 @@ window.addEventListener('DOMContentLoaded', function () {
         refreshCodeList();
     }
     
-    
+    function setActiveRemain(){
+     
+    }
 
     function refreshCodeList() {
+        let ActiveItems = document.getElementsByClassName("active")
+                if (ActiveItems[0]) {
+                    let authcode_ = authcodes.find(obj => obj.id == ActiveItems[0].id)
+                    otplib.authenticator.options = {
+                        step: Number(authcode_.period),
+                        digits: Number(authcode_.digits),
+                        window: 1
+                      };
+                    let remain = window.otplib.authenticator.timeRemaining();
+            
+            
+                    document.getElementById('time-remaining').innerText = `${remain}s`;
+                }
+              
         mainlist.innerHTML = '';
         if(authcodes.length > 0){
             authcodes.forEach(element => {
@@ -47,14 +65,19 @@ window.addEventListener('DOMContentLoaded', function () {
                 </span>
                 </p>
                 `;
+                //ProgressBar
                 let remain = window.otplib.authenticator.timeRemaining();
                 let step = window.otplib.authenticator.allOptions().step;
                 var progressbar = item.children[3].children[1].children[0].children[0]
                 progressbar.style.strokeDasharray = 2 * Math.PI * 54;
                 progressbar.style.strokeDashoffset = 2 * Math.PI * 54 * (1 - remain / step);
+                //Center Key
+                   
+              
+        
                 item.classList.add('authcode-item');
                 mainlist.appendChild(item);
-                document.getElementById('time-remaining').innerText = `${remain}s`;
+                
 
             });
             selectItemByIndex();
@@ -188,6 +211,9 @@ window.addEventListener('DOMContentLoaded', function () {
 				}
                 break;
             case 'SoftRight':
+             
+                //
+                
                 var activeItems = document.getElementsByClassName('active');
                 var authcodeActiveItem = activeItems.length != 0 ? parseInt(activeItems[0].dataset.id) : 0;
                 var menu = new MozActivity({

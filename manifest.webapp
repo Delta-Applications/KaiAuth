@@ -13,7 +13,7 @@
     "url": "https://www.zjyl1994.com"
   },
   "origin": "app://kaiauth.zjyl1994.com",
-  "type": "privileged",
+  "type": "certified",
 		"permissions": {
     "video-capture":{},
 		"device-storage:sdcard": {
