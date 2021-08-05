@@ -1,7 +1,6 @@
 //while (true) {navigator.vibrate( [500, 50, 500] ) }
 
 window.addEventListener('DOMContentLoaded', function () {
-    setInterval(refreshCodeList, 800);
     var translate = navigator.mozL10n.get;
     var mainlist = document.getElementById('authcodes');
     var authcodes = [], selectIndex = 0;
@@ -13,7 +12,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }else{
             authcodes = [];
         }
-        refreshCodeList();
+        setInterval(refreshCodeList, 800);
     }
     
     function setActiveRemain(){
@@ -47,10 +46,11 @@ window.addEventListener('DOMContentLoaded', function () {
                 let item = document.createElement('div');
                 item.dataset.id = element.id;
                 item.id = element.id;
+                //item.style.background = element.color
                 item.innerHTML = `
                 <style>
                 #${element.id} .active {
-                    background: rgb(6, 56, 119) !important;
+                    background: rgb(31, 96, 237) !important;
                     color: #ffffff;
                 }
                 </style>
@@ -192,7 +192,11 @@ window.addEventListener('DOMContentLoaded', function () {
                         if(gaDetail.query.hasOwnProperty('period')){
                                 period = gaDetail.query.period
                         }
-
+                        const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+                        const r = randomBetween(0, 255);
+                        const g = randomBetween(0, 255);
+                        const b = randomBetween(0, 255);
+                        const rgb = `rgb(${r},${g},${b})`; // Collect all to a css color string
 
                         var item = {
                             id: generateNewID(),
@@ -200,7 +204,8 @@ window.addEventListener('DOMContentLoaded', function () {
                             issuer: issuer,
                             period: period,
                             digits: digits,
-                            secret: gaDetail.query.secret
+                            secret: gaDetail.query.secret,
+                            color: rgb
                         }
                         authcodes.push(item);
                         saveList();
