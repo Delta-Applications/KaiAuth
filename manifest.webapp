@@ -2,7 +2,7 @@
   "version": "1.1.1",
   "name": "KaiAuth",
   "description": "Simple Google Authenticator alternative",
-  "theme_color": "#0F4C81",
+  "theme_color": "#019BED",
   "launch_path": "/index.html",
   "icons": {
     "56": "/img/icons/app_56.png",

@@ -1,6 +1,6 @@
 
 #authcodes {
-    position: fixed; top:28px; left: 0; width: 100%; height: calc(100% - 58px);
+    position: fixed; left: 0; width: 100%; height: calc(100% - 58px);
     display: block;
     overflow-x: hidden;
     overflow-y: hidden;
