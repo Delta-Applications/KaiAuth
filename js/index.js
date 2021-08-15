@@ -14,10 +14,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
         setInterval(refreshCodeList, 800);
     }
-    
-    function setActiveRemain(){
-     
-    }
+
 
     function refreshCodeList() {
       
