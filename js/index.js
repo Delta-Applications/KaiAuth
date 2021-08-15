@@ -20,19 +20,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     function refreshCodeList() {
-        let ActiveItems = document.getElementsByClassName("active")
-                if (ActiveItems[0]) {
-                    let authcode_ = authcodes.find(obj => obj.id == ActiveItems[0].id)
-                    otplib.authenticator.options = {
-                        step: Number(authcode_.period),
-                        digits: Number(authcode_.digits),
-                        window: 1
-                      };
-                    let remain = window.otplib.authenticator.timeRemaining();
-            
-            
-                    document.getElementById('time-remaining').innerText = `${remain}s`;
-                }
+      
               
         mainlist.innerHTML = '';
         if(authcodes.length > 0){
@@ -42,7 +30,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     digits: Number(element.digits),
                     window: 1
                   };
-                let code = window.otplib.authenticator.generate(element.secret);
+              //  let code = window.otplib.authenticator.generate(element.secret);
                 let item = document.createElement('div');
                 item.dataset.id = element.id;
                 item.id = element.id;
@@ -57,7 +45,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 <p class="issuer-row">${element.issuer}</p>
                 <p class="name-row">${element.name}</p>
                 <p class="code-row">
-                <span>${numberWithSpaces(code)}</span>
+                <span>*** ***</span>
                 <span>
                     <svg class="progress" width="0.8em" height="0.8em" viewBox="0 0 125 125">
                         <circle class="progress-value" cx="60" cy="60" r="54" stroke-width="12" />
@@ -79,8 +67,28 @@ window.addEventListener('DOMContentLoaded', function () {
                 mainlist.appendChild(item);
                 
 
+
             });
             selectItemByIndex();
+
+        }
+        let ActiveItems = document.getElementsByClassName("active")
+        if (ActiveItems[0]) {
+            let authcode_ = authcodes.find(obj => obj.id == ActiveItems[0].id)
+            let authcode__ = ActiveItems[0]
+
+            otplib.authenticator.options = {
+                step: Number(authcode_.period),
+                digits: Number(authcode_.digits),
+                window: 1
+              };
+            let remain = window.otplib.authenticator.timeRemaining();
+            code_ = window.otplib.authenticator.generate(authcode_.secret);
+            var code = authcode__.children[3].children[0]
+            code.innerText = numberWithSpaces(code_)
+    
+            document.getElementById('time-remaining').innerText = `${remain}s`;
+
         }
     }
     function aboutDialog(){
@@ -93,7 +101,10 @@ window.addEventListener('DOMContentLoaded', function () {
         if (selectIndex > (authcodes.length - 1)) selectIndex = 0;
         let activeElem = mainlist.children[selectIndex];
         activeElem.classList.add('active');
-        activeElem.scrollIntoViewIfNeeded(false);
+        activeElem.scrollIntoView({
+            block: "start",
+            behavior: "smooth",
+        });
     }
     function numberWithSpaces(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");

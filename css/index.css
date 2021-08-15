@@ -3,7 +3,7 @@
     position: fixed; top:28px; left: 0; width: 100%; height: calc(100% - 58px);
     display: block;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 .authcode-item {
