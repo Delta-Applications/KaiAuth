@@ -4,6 +4,11 @@ window.addEventListener('DOMContentLoaded', function () {
     var translate = navigator.mozL10n.get;
     var mainlist = document.getElementById('authcodes');
     var authcodes = [], selectIndex = 0;
+
+    navigator.mozSetMessageHandler("activity",function (a) {
+
+    });
+
     init();
     // functions
     function init(){
@@ -153,6 +158,60 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     }
     // key
+    navigator.mozSetMessageHandler('activity', function(activityRequest) {
+        console.log(activityRequest)
+        qrcodeContent = activityRequest.source.data.url;
+        gaDetail = parseURI(qrcodeContent);
+        console.log(gaDetail)
+        if(gaDetail == null){
+            alert(translate('invalid-qrcode'));
+        }else{
+
+            var totpName = gaDetail.label.account;
+            var issuer = "Unknown Issuer";
+            var digits = 6;
+            var period = 30;
+
+            if(gaDetail.label.issuer){
+                totpName = totpName;
+                issuer = gaDetail.label.issuer
+            }else{
+                if(gaDetail.query.hasOwnProperty('issuer')){
+                    totpName = totpName;
+                    issuer = gaDetail.query.issuer
+                }
+            }
+
+            if(gaDetail.query.hasOwnProperty('digits')){
+                    digits = gaDetail.query.digits
+            }
+            if(gaDetail.query.hasOwnProperty('period')){
+                    period = gaDetail.query.period
+            }
+            const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+            const r = randomBetween(0, 255);
+            const g = randomBetween(0, 255);
+            const b = randomBetween(0, 255);
+            const rgb = `rgb(${r},${g},${b})`; // Collect all to a css color string
+
+            var item = {
+                id: generateNewID(),
+                name: totpName,
+                issuer: issuer,
+                period: period,
+                digits: digits,
+                secret: gaDetail.query.secret,
+                color: rgb
+            }
+            authcodes.push(item);
+            saveList();
+            init();
+            selectIndex = authcodes.length - 1;
+            selectItemByIndex();
+        }
+    });
+
+
     window.addEventListener('keydown', function (e) {
         switch (e.key) {
             case 'ArrowUp': //scroll up
@@ -169,7 +228,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 break;
             case 'SoftLeft':
                 var qrcode = new MozActivity({
-					name: 'com.zjyl1994.kaiauth.addCode'
+					name: 'KaiAuth.scanCode'
 				})
 				qrcode.onsuccess = function () {
 					qrcodeContent = this.result;
@@ -230,7 +289,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 var activeItems = document.getElementsByClassName('active');
                 var authcodeActiveItem = activeItems.length != 0 ? parseInt(activeItems[0].dataset.id) : 0;
                 var menu = new MozActivity({
-                    name: 'com.zjyl1994.kaiauth.Menu',
+                    name: 'KaiAuth.openMenu',
                     data: {activeId:authcodeActiveItem}
 				})
 				menu.onsuccess = function () {

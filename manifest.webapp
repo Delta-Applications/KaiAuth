@@ -22,12 +22,27 @@
 		}
 	},
   "activities": {
-		"com.zjyl1994.kaiauth.addCode": {
-			"href": "./add.html",
+    "view": {
+            "filters": {
+                "type": "url",
+                "url": {
+                    "required": true,
+                    "regexp":"/^otpauth:/"
+                }
+            },
+            "href": "./index.html"
+      },
+  "KaiAuth.addCode": {
+			"href": "./index.html",
 			"disposition": "inline",
 			"returnValue": true
 		},
-    "com.zjyl1994.kaiauth.Menu": {
+		"KaiAuth.scanCode": {
+			"href": "./scan.html",
+			"disposition": "inline",
+			"returnValue": true
+		},
+    "KaiAuth.openMenu": {
 			"href": "./menu.html",
 			"disposition": "inline",
 			"returnValue": true
