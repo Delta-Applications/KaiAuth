@@ -159,7 +159,6 @@ window.addEventListener('DOMContentLoaded', function () {
     }
     // key
     navigator.mozSetMessageHandler('activity', function(activityRequest) {
-        console.log(activityRequest)
         qrcodeContent = activityRequest.source.data.url;
         gaDetail = parseURI(qrcodeContent);
         console.log(gaDetail)
@@ -188,6 +187,10 @@ window.addEventListener('DOMContentLoaded', function () {
             if(gaDetail.query.hasOwnProperty('period')){
                     period = gaDetail.query.period
             }
+
+            if (!confirm("Add code for '"+issuer+":"+totpName+"' ?")) return;
+
+
             const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
             const r = randomBetween(0, 255);
             const g = randomBetween(0, 255);
