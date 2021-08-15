@@ -179,7 +179,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     gaDetail = parseURI(qrcodeContent);
                     console.log(gaDetail)
                     if(gaDetail == null){
-                        alert(translate('valid-qrcode'));
+                        alert(translate('invalid-qrcode'));
                     }else{
 
                         var totpName = gaDetail.label.account;
