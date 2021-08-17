@@ -34,8 +34,7 @@
       },
   "KaiAuth.addCode": {
 			"href": "./index.html",
-			"disposition": "inline",
-			"returnValue": true
+			"disposition": "inline"
 		},
 		"KaiAuth.scanCode": {
 			"href": "./scan.html",

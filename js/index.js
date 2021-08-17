@@ -188,7 +188,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     period = gaDetail.query.period
             }
 
-            if (!confirm("Add code for '"+issuer+":"+totpName+"' ?")) return window.close();
+            if (!confirm("Add OTP Code from URI?")) {return window.close()};
 
 
             const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
